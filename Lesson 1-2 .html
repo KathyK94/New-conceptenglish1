@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>英语练习题互动系统 - Lesson 1 & 2</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #4a6fa5;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.1em;
+        }
+        
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .lessons {
+            flex: 3;
+            min-width: 300px;
+        }
+        
+        .stats-panel {
+            flex: 2;
+            min-width: 280px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            padding: 20px;
+            height: fit-content;
+        }
+        
+        .lesson {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .lesson-title {
+            color: #2c3e50;
+            border-left: 5px solid #3498db;
+            padding-left: 15px;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        
+        .exercise {
+            margin-bottom: 25px;
+        }
+        
+        .exercise-title {
+            color: #2c3e50;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed #eee;
+        }
+        
+        .question {
+            margin-bottom: 12px;
+            padding: 10px 0;
+        }
+        
+        .answer-input {
+            width: 180px;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1em;
+            margin-left: 10px;
+            transition: border 0.3s;
+        }
+        
+        .answer-input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+        
+        .feedback {
+            display: inline-block;
+            margin-left: 15px;
+            font-weight: bold;
+            font-size: 1.2em;
+            width: 24px;
+            text-align: center;
+        }
+        
+        .correct {
+            color: #27ae60;
+        }
+        
+        .incorrect {
+            color: #e74c3c;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-check {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .btn-check:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-reset {
+            background-color: #95a5a6;
+            color: white;
+        }
+        
+        .btn-reset:hover {
+            background-color: #7f8c8d;
+        }
+        
+        .stats-title {
+            color: #2c3e50;
+            margin-top: 0;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .stats-info {
+            margin-bottom: 25px;
+        }
+        
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 8px 0;
+            border-bottom: 1px dashed #eee;
+        }
+        
+        .stat-label {
+            color: #7f8c8d;
+        }
+        
+        .stat-value {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        .stats-table th {
+            background-color: #f8f9fa;
+            padding: 12px;
+            text-align: left;
+            border-bottom: 2px solid #dee2e6;
+            color: #2c3e50;
+        }
+        
+        .stats-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .stats-table tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>英语练习题互动系统</h1>
+        <div class="subtitle">Lesson 1 & 2 - 练习与答案验证</div>
+    </div>
+    
+    <div class="container">
+        <div class="lessons">
+            <div class="lesson">
+                <h2 class="lesson-title">Lesson 1 Excuse me! (对不起!)</h2>
+                
+                <div class="exercise">
+                    <h3 class="exercise-title">I. Practise "My name is ..." according to the example. (仿照例句练习说"我叫……")</h3>
+                    <div class="question" data-answer="My name is Ann Scott.">
+                        <span>2. A: What's your name? (Ann Scott)</span><br>
+                        <span>B: </span>
+                        <input type="text" class="answer-input" placeholder="输入答案">
+                        <span class="feedback"></span>
+                    </div>
+                    <div class="question" data-answer="My name is Kathy Baker.">
+                        <span>3. A: What's your name? (Kathy Baker)</span><br>
+                        <span>B: </span>
+                        <input type="text" class="answer-input" placeholder="输入答案">
+                        <span class="feedback"></span>
+                    </div>
+                    <div class="question" data-answer="My name is Tom Smith.">
+                        <span>4. A: What's your name? (Tom Smith)</span><br>
+                        <span>B: </span>
+                        <input type="text" class="answer-input" placeholder="输入答案">
+                        <span class="feedback"></span>
+                    </div>
+                    <div class="question" data-answer="My name is Sam Scott.">
+                        <span>5. A: What's your name? (Sam Scott)</span><br>
+                        <span>B: </span>
+                        <input type="text" class="answer-input" placeholder="输入答案">
+                        <span class="feedback"></span>
+                    </div>
+                    <div class="question" data-answer="My name is Fred Johnson.">
+                        <span>6. A: What's your name? (Fred Johnson)</span><br>
+                        <span>B: </span>
+                        <input type="text" class="answer-input" placeholder="输入答案">
+                        <span class="feedback"></span>
+                    </div>
+                </div>
+                
+                <div class="exercise">
+                    <h3 class="exercise-title">II. Use the words in the box to complete the dialogues. (用所给的词完成下列对话)</h3>
+                    <div class="question" data-answer="pencil">
+                        <span>2. A: Excuse me. Is this your _______ ?</span><br>
+                        <span>B: Yes, it is.</span><br>
+                        <input type="text" class="answer-input" placeholder="输入答案">
+                        <span class="feedback"></span>
+                    </div>
+                    <div class="question" data-answer="book">
+                        <span>3. A: Excuse me. Is this your _______ ?</span><br>
+                        <span>B: Yes, it is.</span><br>
+                        <input type="text" class="answer-input" placeholder="输入答案">
+                        <span class="feedback"></span>
+                    </div>
+                    <div class="question" data-answer="coat">
+                        <span>4. A: Excuse me. Is this your _______ ?</span><br>
+                        <span>B: Yes, it is.</span><br>
+                        <input type="text" class="answer-input" placeholder="输入答案">
+                        <span class="feedback"></span>
+                    </div>
+                </div>
+                
+                <div class="exercise">
+                    <h3 class="exercise-title">III. Change the statements to questions according to the example. (仿照例句将下列肯定句改为疑问句)</h3>
+                    <div class="question" data-answer="Is this your chair?">
+                        <span>2. This is your chair.</span><br>
+                        <input type="text" class="answer-input" placeholder="输入疑问句">
+                        <span class="feedback"></span>
+                    </div>
+                    <div class="question" data-answer="Is this your skirt?">
+                        <span>3. This is your skirt.</span><br>
+                        <input type="text" class="answer-input" placeholder="输入疑问句">
+                        <span class="feedback"></span>
+                    </div>
+                    <div class="question" data-answer="Is this your car?">
+                        <span>4. This is your car.</span><br>
+                        <input type="text" class="answer-input" placeholder="输入疑问句">
+                        <span class="feedback"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="lesson">
+                <h2 class="lesson-title">Lesson 2 Is this your ...? (这是你的……吗?)</h2>
+                
+                <div class="exercise">
+                    <h3 class="exercise-title">I. Ask questions, using the words given according to the example. (仿照例句用所给的词提问)</h3>
+                    <div class="question" data-answer="Is this your book?">
+                        <span>2. your/book/is/this</span><br>
+                        <input type="text" class="answer-input" placeholder="输入正确顺序的疑问句">
+                        <span class="feedback"></span>
+                    </div>
+                    <div class="question" data-answer="Is this your shirt?">
+                        <span>3. is/this/shirt/your</span><br>
+                        <input type="text" class="answer-input" placeholder="输入正确顺序的疑问句">
+                        <span class="feedback"></span>
+                    </div>
+                    <div class="question" data-answer="Is this your house?">
+                        <span>4. your/house/this/is</span><br>
+                        <input type="text" class="answer-input" placeholder="输入正确顺序的疑问句">
+                        <span class="feedback"></span>
+                    </div>
+                </div>
+                
+                <div class="exercise">
+                    <h3 class="exercise-title">II. Ask questions, using the words given and answer them with "Yes, it is." (仿照例句用所给的词提问，并做简短的肯定回答)</h3>
+                    <div class="question" data-answer="Is this your house?">
+                        <span>2. house</span><br>
+                        <input type="text" class="answer-input" placeholder="输入疑问句">
+                        <span class="feedback"></span>
+                    </div>
+                    <div class="question" data-answer="Is this your classroom?">
+                        <span>3. classroom</span><br>
+                        <input type="text" class="answer-input" placeholder="输入疑问句">
+                        <span class="feedback"></span>
+                    </div>
+                    <div class="question" data-answer="Is this your skirt?">
+                        <span>4. skirt</span><br>
+                        <input type="text" class="answer-input" placeholder="输入疑问句">
+                        <span class="feedback"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <button class="btn btn-check" id="checkAnswers">检查所有答案</button>
+                <button class="btn btn-reset" id="resetAnswers">重置所有答案</button>
+            </div>
+        </div>
+        
+        <div class="stats-panel">
+            <h3 class="stats-title">练习统计与分析</h3>
+            
+            <div class="stats-info">
+                <div class="stat-item">
+                    <span class="stat-label">总题数:</span>
+                    <span class="stat-value" id="totalQuestions">14</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">当前正确:</span>
+                    <span class="stat-value" id="currentCorrect">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">当前错误:</span>
+                    <span class="stat-value" id="currentIncorrect">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">正确率:</span>
+                    <span class="stat-value" id="accuracyRate">0%</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">练习次数:</span>
+                    <span class="stat-value" id="practiceCount">0</span>
+                </div>
+            </div>
+            
+            <h4 class="stats-title">错题记录</h4>
+            <div id="noMistakesMessage">暂无错题记录，开始练习吧！</div>
+            <table class="stats-table hidden" id="mistakesTable">
+                <thead>
+                    <tr>
+                        <th>错题编号</th>
+                        <th>错误次数</th>
+                        <th>错误频率</th>
+                        <th>最近错误</th>
+                    </tr>
+                </thead>
+                <tbody id="mistakesTableBody">
+                    <!-- 错题数据将通过JavaScript动态生成 -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取所有问题元素
+            const questions = document.querySelectorAll('.question');
+            const totalQuestions = questions.length;
+            
+            // 获取按钮
+            const checkAnswersBtn = document.getElementById('checkAnswers');
+            const resetAnswersBtn = document.getElementById('resetAnswers');
+            
+            // 统计元素
+            const totalQuestionsEl = document.getElementById('totalQuestions');
+            const currentCorrectEl = document.getElementById('currentCorrect');
+            const currentIncorrectEl = document.getElementById('currentIncorrect');
+            const accuracyRateEl = document.getElementById('accuracyRate');
+            const practiceCountEl = document.getElementById('practiceCount');
+            const mistakesTable = document.getElementById('mistakesTable');
+            const mistakesTableBody = document.getElementById('mistakesTableBody');
+            const noMistakesMessage = document.getElementById('noMistakesMessage');
+            
+            // 初始化统计数据
+            let practiceCount = 0;
+            let mistakesData = {}; // 存储错题数据 {questionIndex: {count, lastTime, frequency}}
+            
+            // 从本地存储加载数据
+            loadFromLocalStorage();
+            
+            // 更新总题数显示
+            totalQuestionsEl.textContent = totalQuestions;
+            
+            // 检查所有答案
+            checkAnswersBtn.addEventListener('click', function() {
+                let correctCount = 0;
+                let incorrectCount = 0;
+                
+                questions.forEach((question, index) => {
+                    const input = question.querySelector('.answer-input');
+                    const feedback = question.querySelector('.feedback');
+                    const correctAnswer = question.getAttribute('data-answer');
+                    const userAnswer = input.value.trim();
+                    
+                    // 清空之前的反馈
+                    feedback.textContent = '';
+                    feedback.classList.remove('correct', 'incorrect');
+                    
+                    // 如果用户没有输入，跳过检查
+                    if (!userAnswer) {
+                        return;
+                    }
+                    
+                    // 比较答案（不区分大小写，允许末尾标点差异）
+                    const normalizedUserAnswer = userAnswer.toLowerCase().replace(/[.?]$/, '');
+                    const normalizedCorrectAnswer = correctAnswer.toLowerCase().replace(/[.?]$/, '');
+                    
+                    if (normalizedUserAnswer === normalizedCorrectAnswer) {
+                        // 答案正确
+                        feedback.textContent = '✓';
+                        feedback.classList.add('correct');
+                        correctCount++;
+                    } else {
+                        // 答案错误
+                        feedback.textContent = '✗';
+                        feedback.classList.add('incorrect');
+                        incorrectCount++;
+                        
+                        // 记录错题
+                        recordMistake(index, question, userAnswer, correctAnswer);
+                    }
+                });
+                
+                // 更新统计
+                updateStatistics(correctCount, incorrectCount);
+                
+                // 增加练习次数
+                practiceCount++;
+                practiceCountEl.textContent = practiceCount;
+                
+                // 保存到本地存储
+                saveToLocalStorage();
+            });
+            
+            // 重置所有答案
+            resetAnswersBtn.addEventListener('click', function() {
+                questions.forEach(question => {
+                    const input = question.querySelector('.answer-input');
+                    const feedback = question.querySelector('.feedback');
+                    
+                    input.value = '';
+                    feedback.textContent = '';
+                    feedback.classList.remove('correct', 'incorrect');
+                });
+                
+                // 重置当前统计
+                currentCorrectEl.textContent = '0';
+                currentIncorrectEl.textContent = '0';
+                accuracyRateEl.textContent = '0%';
+            });
+            
+            // 记录错题
+            function recordMistake(index, questionEl, userAnswer, correctAnswer) {
+                const questionText = questionEl.querySelector('span').textContent.split('\n')[0];
+                
+                if (!mistakesData[index]) {
+                    mistakesData[index] = {
+                        count: 0,
+                        lastTime: '',
+                        frequency: 0,
+                        questionText: questionText,
+                        correctAnswer: correctAnswer
+                    };
+                }
+                
+                mistakesData[index].count++;
+                mistakesData[index].lastTime = new Date().toLocaleString();
+                mistakesData[index].frequency = (mistakesData[index].count / practiceCount * 100).toFixed(1) + '%';
+                
+                updateMistakesTable();
+            }
+            
+            // 更新错题表格
+            function updateMistakesTable() {
+                const mistakeEntries = Object.entries(mistakesData);
+                
+                if (mistakeEntries.length === 0) {
+                    mistakesTable.classList.add('hidden');
+                    noMistakesMessage.classList.remove('hidden');
+                    return;
+                }
+                
+                // 显示表格，隐藏"暂无错题"消息
+                mistakesTable.classList.remove('hidden');
+                noMistakesMessage.classList.add('hidden');
+                
+                // 清空表格内容
+                mistakesTableBody.innerHTML = '';
+                
+                // 按错误次数排序
+                const sortedMistakes = mistakeEntries.sort((a, b) => b[1].count - a[1].count);
+                
+                // 填充表格
+                sortedMistakes.forEach(([index, data], i) => {
+                    const row = document.createElement('tr');
+                    
+                    // 错题编号
+                    const questionNumCell = document.createElement('td');
+                    questionNumCell.textContent = `Q${parseInt(index) + 1}`;
+                    row.appendChild(questionNumCell);
+                    
+                    // 错误次数
+                    const countCell = document.createElement('td');
+                    countCell.textContent = data.count;
+                    row.appendChild(countCell);
+                    
+                    // 错误频率
+                    const frequencyCell = document.createElement('td');
+                    frequencyCell.textContent = data.frequency;
+                    row.appendChild(frequencyCell);
+                    
+                    // 最近错误时间
+                    const lastTimeCell = document.createElement('td');
+                    lastTimeCell.textContent = data.lastTime;
+                    row.appendChild(lastTimeCell);
+                    
+                    mistakesTableBody.appendChild(row);
+                });
+            }
+            
+            // 更新统计信息
+            function updateStatistics(correctCount, incorrectCount) {
+                currentCorrectEl.textContent = correctCount;
+                currentIncorrectEl.textContent = incorrectCount;
+                
+                const totalAnswered = correctCount + incorrectCount;
+                const accuracyRate = totalAnswered > 0 ? Math.round((correctCount / totalAnswered) * 100) : 0;
+                accuracyRateEl.textContent = accuracyRate + '%';
+            }
+            
+            // 保存数据到本地存储
+            function saveToLocalStorage() {
+                const data = {
+                    practiceCount: practiceCount,
+                    mistakesData: mistakesData
+                };
+                localStorage.setItem('englishExerciseData', JSON.stringify(data));
+            }
+            
+            // 从本地存储加载数据
+            function loadFromLocalStorage() {
+                const savedData = localStorage.getItem('englishExerciseData');
+                
+                if (savedData) {
+                    try {
+                        const data = JSON.parse(savedData);
+                        practiceCount = data.practiceCount || 0;
+                        mistakesData = data.mistakesData || {};
+                        
+                        // 更新显示
+                        practiceCountEl.textContent = practiceCount;
+                        updateMistakesTable();
+                    } catch (e) {
+                        console.error('加载本地存储数据失败:', e);
+                    }
+                }
+            }
+            
+            // 初始更新错题表格
+            updateMistakesTable();
+        });
+    </script>
+</body>
+</html>
