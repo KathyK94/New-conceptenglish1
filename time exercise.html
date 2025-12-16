@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>时间表达法测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        
+        .question {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fafafa;
+        }
+        
+        .question-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #444;
+        }
+        
+        .options {
+            margin-left: 20px;
+        }
+        
+        .option {
+            margin: 8px 0;
+            cursor: pointer;
+        }
+        
+        input[type="radio"] {
+            margin-right: 8px;
+        }
+        
+        .text-input {
+            width: 200px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-left: 10px;
+        }
+        
+        .btn-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 0 10px;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        .result-btn {
+            background-color: #2196F3;
+        }
+        
+        .result-btn:hover {
+            background-color: #1976D2;
+        }
+        
+        .reset-btn {
+            background-color: #f44336;
+        }
+        
+        .reset-btn:hover {
+            background-color: #d32f2f;
+        }
+        
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .correct {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .incorrect {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        
+        .explanation {
+            margin-top: 10px;
+            font-style: italic;
+            color: #666;
+        }
+        
+        .score {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>时间表达法测试</h1>
+        
+        <form id="quizForm">
+            <!-- 第一题：对话理解 -->
+            <div class="question">
+                <div class="question-title">1. 在第一个对话中，女士说"It's two thirty"，这意味着什么时间？</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q1" value="A" id="q1a">
+                        <label for="q1a">A. 2:15</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q1" value="B" id="q1b">
+                        <label for="q1b">B. 2:30</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q1" value="C" id="q1c">
+                        <label for="q1c">C. 2:45</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q1" value="D" id="q1d">
+                        <label for="q1d">D. 3:30</label>
+                    </div>
+                </div>
+                <div class="result" id="result1"></div>
+            </div>
+
+            <!-- 第二题：关键句型 -->
+            <div class="question">
+                <div class="question-title">2. "What time is it, please?" 的正确同义句是？</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q2" value="A" id="q2a">
+                        <label for="q2a">A. How much is the time?</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q2" value="B" id="q2b">
+                        <label for="q2b">B. What time is it your watch, please?</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q2" value="C" id="q2c">
+                        <label for="q2c">C. When is the time?</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q2" value="D" id="q2d">
+                        <label for="q2d">D. Tell me the clock</label>
+                    </div>
+                </div>
+                <div class="result" id="result2"></div>
+            </div>
+
+            <!-- 第三题：词汇理解 -->
+            <div class="question">
+                <div class="question-title">3. "Lazy bones" 的含义是什么？</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q3" value="A" id="q3a">
+                        <label for="q3a">A. 勤奋的人</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q3" value="B" id="q3b">
+                        <label for="q3b">B. 懒骨头；懒人</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q3" value="C" id="q3c">
+                        <label for="q3c">C. 聪明的家伙</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q3" value="D" id="q3d">
+                        <label for="q3d">D. 强壮的人</label>
+                    </div>
+                </div>
+                <div class="result" id="result3"></div>
+            </div>
+
+            <!-- 第四题：习语搭配 -->
+            <div class="question">
+                <div class="question-title">4. "On time" 的正确含义是？</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q4" value="A" id="q4a">
+                        <label for="q4a">A. 迟到</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q4" value="B" id="q4b">
+                        <label for="q4b">B. 按时</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q4" value="C" id="q4c">
+                        <label for="q4c">C. 早到</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q4" value="D" id="q4d">
+                        <label for="q4d">D. 晚到</label>
+                    </div>
+                </div>
+                <div class="result" id="result4"></div>
+            </div>
+
+            <!-- 第五题：语法模式 - 15分之前 -->
+            <div class="question">
+                <div class="question-title">5. 根据语法规则，3:05 可以读作？</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q5" value="A" id="q5a">
+                        <label for="q5a">A. It's five to three</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q5" value="B" id="q5b">
+                        <label for="q5b">B. It's five past three</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q5" value="C" id="q5c">
+                        <label for="q5c">C. It's a quarter past three</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q5" value="D" id="q5d">
+                        <label for="q5d">D. It's half past three</label>
+                    </div>
+                </div>
+                <div class="result" id="result5"></div>
+            </div>
+
+            <!-- 第六题：语法模式 - 15分 -->
+            <div class="question">
+                <div class="question-title">6. 5:15 可以读作？</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q6" value="A" id="q6a">
+                        <label for="q6a">A. It's fifteen to five</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q6" value="B" id="q6b">
+                        <label for="q6b">B. It's fifteen past five</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q6" value="C" id="q6c">
+                        <label for="q6c">C. It's a quarter to five</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q6" value="D" id="q6d">
+                        <label for="q6d">D. Both B and C</label>
+                    </div>
+                </div>
+                <div class="result" id="result6"></div>
+            </div>
+
+            <!-- 第七题：语法模式 - 30分 -->
+            <div class="question">
+                <div class="question-title">7. 6:30 可以读作？</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q7" value="A" id="q7a">
+                        <label for="q7a">A. It's six thirty</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q7" value="B" id="q7b">
+                        <label for="q7b">B. It's half past six</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q7" value="C" id="q7c">
+                        <label for="q7c">C. It's thirty to seven</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q7" value="D" id="q7d">
+                        <label for="q7d">D. Both A and B</label>
+                    </div>
+                </div>
+                <div class="result" id="result7"></div>
+            </div>
+
+            <!-- 第八题：语法模式 - 30分之后 -->
+            <div class="question">
+                <div class="question-title">8. 4:45 可以读作？</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q8" value="A" id="q8a">
+                        <label for="q8a">A. It's four forty-five</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q8" value="B" id="q8b">
+                        <label for="q8b">B. It's fifteen to five</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q8" value="C" id="q8c">
+                        <label for="q8c">C. It's a quarter to five</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q8" value="D" id="q8d">
+                        <label for="q8d">D. All of the above</label>
+                    </div>
+                </div>
+                <div class="result" id="result8"></div>
+            </div>
+
+            <!-- 第九题：实际应用 -->
+            <div class="question">
+                <div class="question-title">9. 如果现在是 7:40，按照语法规则应该如何表达？</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q9" value="A" id="q9a">
+                        <label for="q9a">A. It's seven forty</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q9" value="B" id="q9b">
+                        <label for="q9b">B. It's twenty to eight</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q9" value="C" id="q9c">
+                        <label for="q9c">C. It's forty past seven</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q9" value="D" id="q9d">
+                        <label for="q9d">D. Both A and B</label>
+                    </div>
+                </div>
+                <div class="result" id="result9"></div>
+            </div>
+
+            <!-- 第十题：AM/PM -->
+            <div class="question">
+                <div class="question-title">10. 12:00 PM 表示什么时间？</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q10" value="A" id="q10a">
+                        <label for="q10a">A. 正午</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q10" value="B" id="q10b">
+                        <label for="q10b">B. 午夜</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q10" value="C" id="q10c">
+                        <label for="q10c">C. 早上</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q10" value="D" id="q10d">
+                        <label for="q10d">D. 晚上</label>
+                    </div>
+                </div>
+                <div class="result" id="result10"></div>
+            </div>
+
+            <div class="btn-container">
+                <button type="button" class="result-btn" onclick="checkAnswers()">提交答案</button>
+                <button type="button" class="reset-btn" onclick="resetQuiz()">重新开始</button>
+            </div>
+            
+            <div class="score" id="score"></div>
+        </form>
+    </div>
+
+    <script>
+        // 正确答案
+        const correctAnswers = {
+            q1: 'B',
+            q2: 'B', 
+            q3: 'B',
+            q4: 'B',
+            q5: 'B',
+            q6: 'D',
+            q7: 'D',
+            q8: 'D',
+            q9: 'D',
+            q10: 'A'
+        };
+
+        // 答案解析
+        const explanations = {
+            q1: 'Two thirty 就是 2点30分，这是直接读数法。',
+            q2: '"What time is it your watch, please?" 是 "What time is it, please?" 的同义句。',
+            q3: '"Lazy bones" 是俚语，意思是懒骨头、懒人，表示这个人很懒。',
+            q4: '"On time" 是固定搭配，意思是按时、准时。',
+            q5: '15分之前可以直读或加past倒装，所以3:05可以说 "It\'s five past three"。',
+            q6: '15分可读作fifteen past或a quarter，所以5:15可以说 "It\'s fifteen past five" 或 "It\'s a quarter five"。',
+            q7: '30分可以直读或加half past倒装，所以6:30可以说 "It\'s six thirty" 或 "It\'s half past six"。',
+            q8: '30分之后可直读或倒着数还差多少到整点，所以4:45可以说 "It\'s four forty-five"、"It\'s fifteen to five" 或 "It\'s a quarter to five"。',
+            q9: '30分之后可直读或倒着数，所以7:40可以说 "It\'s seven forty" 或 "It\'s twenty to eight"。',
+            q10: '12:00 PM = It\'s twelve noon (正午)，12:00 AM = It\'s twelve midnight (午夜)。'
+        };
+
+        function checkAnswers() {
+            let score = 0;
+            const totalQuestions = 10;
+
+            // 检查每个问题的答案
+            for (let i = 1; i <= totalQuestions; i++) {
+                const questionName = 'q' + i;
+                const selectedAnswer = document.querySelector(`input[name="${questionName}"]:checked`);
+                const resultDiv = document.getElementById('result' + i);
+                
+                if (selectedAnswer) {
+                    if (selectedAnswer.value === correctAnswers[questionName]) {
+                        score++;
+                        resultDiv.innerHTML = `
+                            <div class="correct">
+                                ✓ 正确！
+                                <div class="explanation">${explanations[questionName]}</div>
+                            </div>
+                        `;
+                        resultDiv.style.display = 'block';
+                    } else {
+                        resultDiv.innerHTML = `
+                            <div class="incorrect">
+                                ✗ 错误！正确答案是 ${correctAnswers[questionName]}
+                                <div class="explanation">${explanations[questionName]}</div>
+                            </div>
+                        `;
+                        resultDiv.style.display = 'block';
+                    }
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="incorrect">
+                            ✗ 未选择答案！正确答案是 ${correctAnswers[questionName]}
+                            <div class="explanation">${explanations[questionName]}</div>
+                        </div>
+                    `;
+                    resultDiv.style.display = 'block';
+                }
+            }
+
+            // 显示总分
+            const scoreDiv = document.getElementById('score');
+            const percentage = Math.round((score / totalQuestions) * 100);
+            let grade = '';
+            
+            if (percentage >= 90) grade = '优秀！';
+            else if (percentage >= 80) grade = '良好！';
+            else if (percentage >= 70) grade = '中等！';
+            else if (percentage >= 60) grade = '及格！';
+            else grade = '需要加强学习！';
+
+            scoreDiv.innerHTML = `
+                您的得分：${score}/${totalQuestions} (${percentage}%) - ${grade}
+            `;
+            scoreDiv.style.display = 'block';
+        }
+
+        function resetQuiz() {
+            // 清除所有选择
+            const radioButtons = document.querySelectorAll('input[type="radio"]');
+            radioButtons.forEach(radio => radio.checked = false);
+            
+            // 隐藏所有结果
+            const results = document.querySelectorAll('.result');
+            results.forEach(result => {
+                result.style.display = 'none';
+                result.innerHTML = '';
+            });
+            
+            // 隐藏分数
+            document.getElementById('score').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
